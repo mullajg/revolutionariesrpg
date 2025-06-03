@@ -1,0 +1,26 @@
+{
+  "routes": [
+    {
+      "route": "/api/*",
+      "allowedRoles": [ "authenticated" ], 
+      "methods": [ "GET", "POST", "PUT", "DELETE" ],
+      "rewrite": "/api/{*}"
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [ "/api/*" ]
+  },
+  "responseOverrides": {
+    "401": {
+      "rewrite": "/.auth/login/aad", 
+      "statusCode": 302
+    }
+  },
+  "globalHeaders": {
+    "Content-Security-Policy": "default-src 'self' 'unsafe-inline' 'unsafe-eval' *.azurewebsites.net *.azurestaticapps.net; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline' *.azurewebsites.net *.azurestaticapps.net;"
+  },
+  "mimeTypes": {
+    ".json": "application/json"
+  }
+}

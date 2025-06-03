@@ -1,5 +1,13 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Visual Studio related files/folders
+.vs/
+*.suo
+*.user
+*.log
+[Bb]in/
+[Oo]bj/
+
 # dependencies
 /node_modules
 /.pnp
