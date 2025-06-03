@@ -16,7 +16,7 @@ export default function Home() {
           <li className="tracking-[-.01em]">
             Placeholder for the new Revolutionaries RPG web app! Updates coming soon!
           </li>
-        </ol>
+         </ol>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
