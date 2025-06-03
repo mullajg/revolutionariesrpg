@@ -1,8 +1,8 @@
 {
   "routes": [
     {
-      "route": "/*", // Applies to all routes in your application
-      "allowedRoles": [ "authenticated" ] // Requires any logged-in user
+      "route": "/*",
+      "allowedRoles": [ "authenticated" ] 
     },
     {
       "route": "/api/*",
