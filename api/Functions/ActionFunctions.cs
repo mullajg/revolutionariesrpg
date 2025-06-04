@@ -26,9 +26,16 @@ public class ActionFunctions
     public async Task<IActionResult> GetAllActions([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllActions")] HttpRequest req)
     {
         _logger.LogInformation("GetAllActions run...");
-        var actions = await _repository.GetAllAsync();
-        return new OkObjectResult(actions);
-    }
+        try
+        {
+            var actions = await _repository.GetAllAsync();
+            return new OkObjectResult(actions);
+        }
+        catch (Exception ex) 
+        {
+            log.LogError(ex, "An unexpected error occurred while parsing request data.");
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+        }
 
     [Function("GetActionById")]
     public async Task<IActionResult> GetActionById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetActionById/{id}")] HttpRequest req, Guid id)
