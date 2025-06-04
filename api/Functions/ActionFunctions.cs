@@ -31,11 +31,12 @@ public class ActionFunctions
             var actions = await _repository.GetAllAsync();
             return new OkObjectResult(actions);
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
-            log.LogError(ex, "An unexpected error occurred while parsing request data.");
+            _logger.LogError(ex, "An unexpected error occurred while parsing request data.");
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
+    }
 
     [Function("GetActionById")]
     public async Task<IActionResult> GetActionById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetActionById/{id}")] HttpRequest req, Guid id)
