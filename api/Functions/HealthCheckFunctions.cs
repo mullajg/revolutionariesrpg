@@ -20,8 +20,8 @@ public class HealthCheckFunctions
     {
         try
         {
-            await _db.Actions.FirstOrDefaultAsync();
-            return new OkObjectResult();
+            var action = await _db.Actions.FirstOrDefaultAsync();
+            return new OkObjectResult(action);
         }
         catch (Exception ex)
         {
