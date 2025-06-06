@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using revolutionariesrpg.api;
@@ -14,8 +16,16 @@ public class HealthCheckFunctions
     }
 
     [Function("HealthCheck")]
-    public async Task HealthCheck([TimerTrigger("0 */5 * * * *")] TimerInfo myTimer)
+    public async Task<IActionResult> HealthCheck([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "HealthCheck")] HttpRequest req)
     {
-        await _db.Actions.FirstAsync();
+        try
+        {
+            await _db.Actions.FirstOrDefaultAsync();
+            return new OkObjectResult();
+        }
+        catch (Exception ex)
+        {
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+        }
     }
 }
