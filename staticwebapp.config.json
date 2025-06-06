@@ -1,6 +1,11 @@
 {
   "routes": [
     {
+      "route": "/api/healthcheck",
+      "methods": [ "GET" ],
+      "allowedRoles": [ "anonymous" ]
+    },
+    {
       "route": "/_next/static/*",
       "allowedRoles": [ "anonymous" ]
     },
