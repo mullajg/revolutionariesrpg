@@ -2,7 +2,7 @@
   "routes": [
     {
       "route": "/api/HealthCheck",
-      "methods": [ "GET" ],
+      "methods": [ "GET", "HEAD" ],
       "allowedRoles": [ "anonymous" ]
     },
     {
