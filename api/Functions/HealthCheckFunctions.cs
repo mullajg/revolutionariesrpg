@@ -16,12 +16,23 @@ public class HealthCheckFunctions
     }
 
     [Function("HealthCheck")]
-    public async Task<IActionResult> HealthCheck([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "HealthCheck")] HttpRequest req)
+    public async Task<IActionResult> HealthCheck([HttpTrigger(AuthorizationLevel.Anonymous, "get", "head", Route = "HealthCheck")] HttpRequest req)
     {
         try
         {
             var action = await _db.Actions.FirstOrDefaultAsync();
-            return new OkObjectResult(action);
+            if (req.Method.Equals("HEAD", StringComparison.OrdinalIgnoreCase) && action != null)
+            {
+                return new OkResult();
+            }
+            else if (req.Method.Equals("HEAD", StringComparison.OrdinalIgnoreCase) && action != null)
+            {
+                return new OkObjectResult(action);
+            }
+            else
+            {
+                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
         }
         catch (Exception ex)
         {
