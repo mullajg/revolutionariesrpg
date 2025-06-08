@@ -25,7 +25,7 @@ public class HealthCheckFunctions
             {
                 return new OkResult();
             }
-            else if (req.Method.Equals("HEAD", StringComparison.OrdinalIgnoreCase) && action != null)
+            else if (req.Method.Equals("GET", StringComparison.OrdinalIgnoreCase) && action != null)
             {
                 return new OkObjectResult(action);
             }
