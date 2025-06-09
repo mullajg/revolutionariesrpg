@@ -15,7 +15,7 @@ public class SpellFunctions
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Spell> _repository;
 
-    public SpellFunctions(ILogger<SpellFunctions> logger, IUnitOfWork unitOfWork, AppDbContext db)
+    public SpellFunctions(IUnitOfWork unitOfWork, AppDbContext db)
     {
         _db = db;
         _unitOfWork = unitOfWork;
