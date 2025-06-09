@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using revolutionariesrpg.api.Entities;
 using revolutionariesrpg.api.Interfaces;
@@ -12,21 +11,22 @@ namespace revolutionariesrpg.api.Functions;
 public class SpellFunctions 
 {
     private readonly AppDbContext _db;
+    private readonly ILogger<SpellFunctions> _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Spell> _repository;
 
-    public SpellFunctions(IUnitOfWork unitOfWork, AppDbContext db)
+    public SpellFunctions(ILogger<SpellFunctions> logger, IUnitOfWork unitOfWork, AppDbContext db)
     {
         _db = db;
         _unitOfWork = unitOfWork;
+        _logger = logger;
         _repository = _unitOfWork.GetRepository<Spell>();
     }
 
     [Function("GetAllSpells")]
-    public async Task<IActionResult> GetAllSpells([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllSpells")] HttpRequest req, FunctionContext executionContext)
+    public async Task<IActionResult> GetAllSpells([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllSpells")] HttpRequest req)
     {
-        ILogger logger = executionContext.InstanceServices.GetService<ILogger<SpellFunctions>>();
-        logger.LogInformation("GetAllSpells run...");
+        _logger.LogInformation("GetAllSpells run...");
         var Spells = await _repository.GetAllAsync();
         return new OkObjectResult(Spells);
     }
