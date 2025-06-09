@@ -5,6 +5,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using revolutionariesrpg.api.Interfaces;
+using System.Security.Claims;
 
 namespace revolutionariesrpg.api.Functions;
 
@@ -43,18 +44,19 @@ public class PlayerCharacterFunctions
     public async Task<IActionResult> GetPlayerCharacterById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetPlayerCharacterById/{id}")] HttpRequest req, Guid id)
     {
         _logger.LogInformation("GetPlayerCharacterById run...");
-        var user = UserAuth.ParseClientPrincipal(req);
-
         var PlayerCharacter = await _repository.GetByIdAsync(id);
         return new OkObjectResult(PlayerCharacter);
     }
 
     [Function("GetAllUserPlayerCharacters")]
-    public async Task<IActionResult> GetAllUserPlayerCharacters([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllUserPlayerCharacters")] HttpRequest req, Guid id)
+    public async Task<IActionResult> GetAllUserPlayerCharacters([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllUserPlayerCharacters")] HttpRequest req)
     {
         _logger.LogInformation("GetAllUserPlayerCharacters run...");
-        var PlayerCharacter = await _repository.GetByIdAsync(id);
-        return new OkObjectResult(PlayerCharacter);
+        var user = UserAuth.ParseClientPrincipal(req);
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var PlayerCharacters = await _db.PlayerCharacters.Where(p => p.UserId == userId).ToListAsync();
+
+        return new OkObjectResult(PlayerCharacters);
     }
 
     [Function("GetAllPlayerCharactersWithChildren")]

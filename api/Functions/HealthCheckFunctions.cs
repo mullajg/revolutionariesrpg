@@ -6,8 +6,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using revolutionariesrpg.api;
 using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
 
 namespace RevolutionariesApi.Functions;
 
