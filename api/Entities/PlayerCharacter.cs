@@ -34,6 +34,7 @@ namespace revolutionariesrpg.api.Entities
         public required int FortDefense { get; set; }
         public required int BaseAttack { get; set; }
         public required int Will { get; set; }
+        public string? UserId { get; set; }
         public virtual List<PlayerCharacterAction> PlayerCharacterActions { get; set; }
         public virtual List<PlayerCharacterAttribute> PlayerCharacterAttributes { get; set; }
         public virtual List<PlayerCharacterEquipment> PlayerCharacterEquipment { get; set; }
