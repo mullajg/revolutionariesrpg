@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using revolutionariesrpg.api.Entities;
 using revolutionariesrpg.api.Interfaces;
@@ -22,7 +23,7 @@ public class SpellFunctions
     }
 
     [Function("GetAllSpells")]
-    public async Task<IActionResult> GetAllSpells([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllSpells")] HttpRequest req)
+    public async Task<IActionResult> GetAllSpells([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllSpells")] HttpRequest req, FunctionContext executionContext)
     {
         ILogger logger = executionContext.InstanceServices.GetService<ILogger<SpellFunctions>>();
         logger.LogInformation("GetAllSpells run...");
@@ -33,7 +34,7 @@ public class SpellFunctions
     [Function("GetSpellById")]
     public async Task<IActionResult> GetSpellById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetSpellById/{id}")] HttpRequest req, Guid id)
     {
-        _logger.LogInformation("GetSpellById run...");
+        //_logger.LogInformation("GetSpellById run...");
         var Spell = await _repository.GetByIdAsync(id);
         return new OkObjectResult(Spell);
     }
@@ -41,7 +42,7 @@ public class SpellFunctions
     [Function("GetAllSpellsWithChildren")]
     public async Task<IActionResult> GetAllSpellsWithChildren([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllSpellsWithChildren")] HttpRequest req)
     {
-        _logger.LogInformation("GetAllSpells run...");
+        //_logger.LogInformation("GetAllSpells run...");
         var Spells = await _db.Spells
             .Include(s => s.SpellEffects)
             .Include(s => s.SpellType)
@@ -52,7 +53,7 @@ public class SpellFunctions
     [Function("GetSpellByIdWithChildren")]
     public async Task<IActionResult> GetSpellByIdWithChildren([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetSpellByIdWithChildren/{id}")] HttpRequest req, Guid id)
     {
-        _logger.LogInformation("GetSpellById run...");
+        //_logger.LogInformation("GetSpellById run...");
         var Spell = await _db.Spells
             .Include(s => s.SpellEffects)
             .Include(s => s.SpellType)
@@ -63,7 +64,7 @@ public class SpellFunctions
     [Function("UpdateSpell")]
     public async Task<IActionResult> UpdateSpell([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "UpdateSpell/{id}")] HttpRequest req, Guid id)
     {
-        _logger.LogInformation("UpdateSpell run...");
+        //_logger.LogInformation("UpdateSpell run...");
         var Spell = await _repository.Update(req.Body, id);
         await _unitOfWork.CommitAsync();
 
@@ -73,7 +74,7 @@ public class SpellFunctions
     [Function("CreateSpell")]
     public async Task<IActionResult> CreateSpell([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "CreateSpell")] HttpRequest req)
     {
-        _logger.LogInformation("CreateSpell run...");
+        //_logger.LogInformation("CreateSpell run...");
         var Spell = await _repository.AddAsync(req.Body);
         await _unitOfWork.CommitAsync();
 
@@ -83,7 +84,7 @@ public class SpellFunctions
     [Function("DeleteSpell")]
     public async Task<IActionResult> DeleteSpell([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "DeleteSpell/{id}")] HttpRequest req, Guid id)
     {
-        _logger.LogInformation("DeleteSpell run...");
+        //_logger.LogInformation("DeleteSpell run...");
         var success = await _repository.Delete(id);
         await _unitOfWork.CommitAsync();
 
