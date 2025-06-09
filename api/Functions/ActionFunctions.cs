@@ -10,11 +10,11 @@ namespace revolutionariesrpg.api.Functions;
 public class ActionFunctions
 {
     private readonly AppDbContext _db;
-    private readonly ILogger<ActionFunctions> _logger;
+    private readonly ILogger _logger;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IGenericRepository<Entities.Action> _repository;
 
-    public ActionFunctions(ILogger<ActionFunctions> logger, IUnitOfWork unitOfWork, AppDbContext db)
+    public ActionFunctions(ILogger logger, IUnitOfWork unitOfWork, AppDbContext db)
     {
         _db = db;
         _logger = logger;
