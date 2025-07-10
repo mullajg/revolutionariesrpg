@@ -1,29 +1,25 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Next.js + HeroUI",
+  name: "Revolutionaries",
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [
     {
-      label: "Home",
-      href: "/",
+        label: "Home",
+        href: "/",
     },
     {
-      label: "Docs",
-      href: "/docs",
+        label: "My Characters",
+        href: "/mycharacters",
     },
     {
-      label: "Pricing",
-      href: "/pricing",
+        label: "Create New Character",
+        href: "/createnewcharacter",
     },
     {
-      label: "Blog",
-      href: "/blog",
-    },
-    {
-      label: "About",
-      href: "/about",
-    },
+        label: "Compendium",
+        href: "/compendium"
+    }
   ],
   navMenuItems: [
     {
@@ -60,10 +56,11 @@ export const siteConfig = {
     },
   ],
   links: {
-    github: "https://github.com/heroui-inc/heroui",
+    roll20: "https://app.roll20.net/campaigns/details/18382217/revolutionaries-shifting-sands",
     twitter: "https://twitter.com/hero_ui",
     docs: "https://heroui.com",
     discord: "https://discord.gg/9b6yyZKmH4",
     sponsor: "https://patreon.com/jrgarciadev",
+    github: "https://github.com/mullajg/revolutionariesrpg"
   },
 };
