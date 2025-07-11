@@ -1,58 +1,42 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Next.js + HeroUI",
-  description: "Make beautiful websites regardless of your design experience.",
+  name: "Revolutionaries",
+  description: "A website for Revolutionaries RPG. Gameplay by Hunter Allan. Website by James Mullan.",
   navItems: [
     {
-      label: "Home",
-      href: "/",
+        label: "Home",
+        href: "/",
     },
     {
-      label: "Docs",
-      href: "/docs",
+        label: "My Characters",
+        href: "/mycharacters",
     },
     {
-      label: "Pricing",
-      href: "/pricing",
+        label: "Create New Character",
+        href: "/createnewcharacter",
     },
     {
-      label: "Blog",
-      href: "/blog",
-    },
-    {
-      label: "About",
-      href: "/about",
-    },
+        label: "Compendium",
+        href: "/compendium"
+    }
   ],
   navMenuItems: [
     {
-      label: "Profile",
-      href: "/profile",
+        label: "Home",
+        href: "/",
     },
     {
-      label: "Dashboard",
-      href: "/dashboard",
+        label: "My Characters",
+        href: "/mycharacters",
     },
     {
-      label: "Projects",
-      href: "/projects",
+        label: "Create New Character",
+        href: "/createnewcharacter",
     },
     {
-      label: "Team",
-      href: "/team",
-    },
-    {
-      label: "Calendar",
-      href: "/calendar",
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
+        label: "Compendium",
+        href: "/compendium"
     },
     {
       label: "Logout",
@@ -60,10 +44,11 @@ export const siteConfig = {
     },
   ],
   links: {
-    github: "https://github.com/heroui-inc/heroui",
+    roll20: "https://app.roll20.net/campaigns/details/18382217/revolutionaries-shifting-sands",
     twitter: "https://twitter.com/hero_ui",
     docs: "https://heroui.com",
     discord: "https://discord.gg/9b6yyZKmH4",
     sponsor: "https://patreon.com/jrgarciadev",
+    github: "https://github.com/mullajg/revolutionariesrpg"
   },
 };
