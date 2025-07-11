@@ -2,7 +2,7 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "Revolutionaries",
-  description: "Make beautiful websites regardless of your design experience.",
+  description: "A website for Revolutionaries RPG. Gameplay by Hunter Allan. Website by James Mullan.",
   navItems: [
     {
         label: "Home",
@@ -23,32 +23,20 @@ export const siteConfig = {
   ],
   navMenuItems: [
     {
-      label: "Profile",
-      href: "/profile",
+        label: "Home",
+        href: "/",
     },
     {
-      label: "Dashboard",
-      href: "/dashboard",
+        label: "My Characters",
+        href: "/mycharacters",
     },
     {
-      label: "Projects",
-      href: "/projects",
+        label: "Create New Character",
+        href: "/createnewcharacter",
     },
     {
-      label: "Team",
-      href: "/team",
-    },
-    {
-      label: "Calendar",
-      href: "/calendar",
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
+        label: "Compendium",
+        href: "/compendium"
     },
     {
       label: "Logout",

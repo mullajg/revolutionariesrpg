@@ -39,6 +39,30 @@ public class WeaponFunctions
         return new OkObjectResult(weapon);
     }
 
+    [Function("GetWeaponsForTable")]
+    public async Task<IActionResult> GetAllWeaponsForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetWeaponsForTable")] HttpRequest req)
+    {
+        _logger.LogInformation("GetAllWeaponsForTable run...");
+        var weapons = await _db.Weapons
+            .AsNoTracking()
+            .Include(w => w.WeaponType)
+            .Include(w => w.Die)
+            .Select(w => new
+            {
+                Name = w.Name,
+                Type = w.WeaponType.Type,
+                Damage = w.DieId.HasValue ? "d" + w.Die.Sides.ToString() + "+" + w.Damage.ToString() : "N/A",
+                Cost = w.Cost.HasValue ? w.Cost.ToString() : "N/A",
+                Concealable = w.Concealable.HasValue ? w.Concealable.Value ? "Yes" : "No" : "N/A",
+                Range = w.Range.HasValue ? w.Range.ToString() : "N/A",
+                AmmoCapacity = w.AmmoCapacity.HasValue ? w.AmmoCapacity.ToString() : "N/A", 
+                Radius = w.Radius.HasValue ? w.Radius.ToString() : "N/A",
+                Description = w.Description
+            })
+            .ToListAsync();
+        return new OkObjectResult(weapons);
+    }
+
     [Function("GetAllWeaponsWithChildren")]
     public async Task<IActionResult> GetAllWeaponsWithChildren([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllWeaponsWithChildren")] HttpRequest req)
     {
