@@ -29,6 +29,14 @@ public class LanguageFunctions
         return new OkObjectResult(Languages);
     }
 
+    [Function("GetAllLanguagesForTable")]
+    public async Task<IActionResult> GetAllLanguagesForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllLanguagesForTable")] HttpRequest req)
+    {
+        _logger.LogInformation("GetAllLanguagesForTable run...");
+        var Languages = await _repository.GetAllAsync();
+        return new OkObjectResult(Languages.Select(s => new { name = s.Name, description = s.Description }));
+    }
+
     [Function("GetLanguageById")]
     public async Task<IActionResult> GetLanguageById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetLanguageById/{id}")] HttpRequest req, Guid id)
     {

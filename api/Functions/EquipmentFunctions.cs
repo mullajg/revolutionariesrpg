@@ -30,6 +30,20 @@ public class EquipmentFunctions
         return new OkObjectResult(Equipments);
     }
 
+    [Function("GetAllEquipmentsForTable")]
+    public async Task<IActionResult> GetAllEquipmentsForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllEquipmentsForTable")] HttpRequest req)
+    {
+        _logger.LogInformation("GetAllEquipmentsForTable run...");
+        var Equipments = await _repository.GetAllAsync();
+        return new OkObjectResult(Equipments.Select(e => new 
+        { 
+            name = e.Name, 
+            cost = e.Cost, 
+            level = e.Level,
+            description = e.Description
+        }));
+    }
+
     [Function("GetEquipmentById")]
     public async Task<IActionResult> GetEquipmentById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetEquipmentById/{id}")] HttpRequest req, Guid id)
     {

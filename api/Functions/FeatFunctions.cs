@@ -30,6 +30,14 @@ public class FeatFunctions
         return new OkObjectResult(Feats);
     }
 
+    [Function("GetAllFeatsForTable")]
+    public async Task<IActionResult> GetAllFeatsForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllFeatsForTable")] HttpRequest req)
+    {
+        _logger.LogInformation("GetAllFeatsForTable run...");
+        var Feats = await _repository.GetAllAsync();
+        return new OkObjectResult(Feats.Select(f => new { name = f.Name, description = f.Description }));
+    }
+
     [Function("GetFeatById")]
     public async Task<IActionResult> GetFeatById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetFeatById/{id}")] HttpRequest req, Guid id)
     {

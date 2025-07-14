@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using revolutionariesrpg.api.Entities;
 using revolutionariesrpg.api.Interfaces;
@@ -27,6 +28,22 @@ public class SkillFunctions
     {
         _logger.LogInformation("GetAllSkills run...");
         var Skills = await _repository.GetAllAsync();
+        return new OkObjectResult(Skills);
+    }
+
+    [Function("GetAllSkillsForTable")]
+    public async Task<IActionResult> GetAllSkillsForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllSkillsForTable")] HttpRequest req)
+    {
+        _logger.LogInformation("GetAllSkillsForTable run...");
+        var Skills = await _db.Skills
+            .Include(s => s.Attribute)
+            .Select(s => new
+            {
+                name = s.Name,
+                attribute = s.Attribute != null ? s.Attribute.ShortName : "N/A",
+                description = s.Description
+            })
+            .ToListAsync();
         return new OkObjectResult(Skills);
     }
 

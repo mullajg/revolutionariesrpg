@@ -26,9 +26,17 @@ public class ClassFunctions
     [Function("GetAllClasses")]
     public async Task<IActionResult> GetAllClasses([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllClasses")] HttpRequest req)
     {
-        _logger.LogInformation("GetAllClasss run...");
+        _logger.LogInformation("GetAllClasses run...");
         var Classs = await _repository.GetAllAsync();
         return new OkObjectResult(Classs);
+    }
+
+    [Function("GetAllClassesForTable")]
+    public async Task<IActionResult> GetAllClassesForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllClassesForTable")] HttpRequest req)
+    {
+        _logger.LogInformation("GetAllClassesForTable run...");
+        var Classes = await _repository.GetAllAsync();
+        return new OkObjectResult(Classes.Select(c => new { name = c.Name, description = c.Description}));
     }
 
     [Function("GetClassById")]

@@ -30,6 +30,14 @@ public class HeritageFunctions
         return new OkObjectResult(Heritages);
     }
 
+    [Function("GetAllHeritagesForTable")]
+    public async Task<IActionResult> GetAllHeritagesForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllHeritagesForTable")] HttpRequest req)
+    {
+        _logger.LogInformation("GetAllHeritagesForTable run...");
+        var Heritages = await _repository.GetAllAsync();
+        return new OkObjectResult(Heritages.Select(h => new { name = h.Name, description = h.Description }));
+    }
+
     [Function("GetHeritageById")]
     public async Task<IActionResult> GetHeritageById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetHeritageById/{id}")] HttpRequest req, Guid id)
     {

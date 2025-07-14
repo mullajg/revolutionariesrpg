@@ -31,6 +31,14 @@ public class SpellFunctions
         return new OkObjectResult(Spells);
     }
 
+    [Function("GetAllSpellsForTable")]
+    public async Task<IActionResult> GetAllSpellsForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllSpellsForTable")] HttpRequest req)
+    {
+        _logger.LogInformation("GetAllSpells run...");
+        var Spells = await _repository.GetAllAsync();
+        return new OkObjectResult(Spells.Select(s => new { name = s.Name, description = s.Description }));
+    }
+
     [Function("GetSpellById")]
     public async Task<IActionResult> GetSpellById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetSpellById/{id}")] HttpRequest req, Guid id)
     {

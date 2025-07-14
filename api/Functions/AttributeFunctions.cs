@@ -31,6 +31,14 @@ public class AttributeFunctions
         return new OkObjectResult(Attributes);
     }
 
+    [Function("GetAllAttributesForTable")]
+    public async Task<IActionResult> GetAllAttributesForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllAttributesForTable")] HttpRequest req)
+    {
+        _logger.LogInformation("GetAllAttributesForTable run...");
+        var Attributes = await _repository.GetAllAsync();
+        return new OkObjectResult(Attributes.Select(a => new { name = a.Name, shortName = a.ShortName, description = a.Notes}));
+    }
+
     [Function("GetAttributeById")]
     public async Task<IActionResult> GetAttributeById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAttributeById/{id}")] HttpRequest req, Guid id)
     {

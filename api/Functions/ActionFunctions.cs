@@ -38,6 +38,21 @@ public class ActionFunctions
         }
     }
 
+    [Function("GetAllActionsForTable")]
+    public async Task<IActionResult> GetAllActionsForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllActionsForTable")] HttpRequest req)
+    {
+        _logger.LogInformation("GetAllActionsForTable run...");
+        var actions = await _db.Actions
+            .Include(a => a.ActionType)
+            .Select(a => new { 
+                name = a.Name,
+                actionType = a.ActionType != null ? a.ActionType.Type : "N/A",
+                description = a.Description
+            })
+            .ToListAsync();
+        return new OkObjectResult(actions);
+    }
+
     [Function("GetActionById")]
     public async Task<IActionResult> GetActionById([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetActionById/{id}")] HttpRequest req, Guid id)
     {
