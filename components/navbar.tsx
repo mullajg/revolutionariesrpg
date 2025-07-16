@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -23,8 +25,8 @@ import { FaDiceD20 } from "react-icons/fa6";
 import { GiGunRose } from "react-icons/gi";
 import NextLink from "next/link";
 import clsx from "clsx";
-import { Icon } from "@iconify/react"
-
+import { Icon } from "@iconify/react";
+import { useState } from "react";
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import {
@@ -37,29 +39,32 @@ import {
 } from "@/components/icons";
 
 export const Navbar = () => {
-  const searchInput = (
+
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+    const searchInput = (
     <Input
-      aria-label="Search"
-      classNames={{
+        aria-label="Search"
+        classNames={{
         inputWrapper: "bg-default-100",
         input: "text-sm",
-      }}
-      endContent={
+        }}
+        endContent={
         <Kbd className="hidden lg:inline-block" keys={["command"]}>
-          K
+            K
         </Kbd>
-      }
-      labelPlacement="outside"
-      placeholder="Search..."
-      startContent={
+        }
+        labelPlacement="outside"
+        placeholder="Search..."
+        startContent={
         <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-      }
-      type="search"
+        }
+        type="search"
     />
-  );
+    );
 
-  return (
-    <HeroUINavbar maxWidth="xl" position="sticky">
+    return (
+        <HeroUINavbar maxWidth="xl" position="sticky" onMenuOpenChange={setIsMenuOpen} isMenuOpen={isMenuOpen}>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
@@ -118,9 +123,8 @@ export const Navbar = () => {
         <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>
-
+      
       <NavbarMenu>
-        {searchInput}
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
@@ -128,6 +132,7 @@ export const Navbar = () => {
                 color="foreground"
                 href={item.href}
                 size="lg"
+                onClick={() => setIsMenuOpen(false)}
               >
                 {item.label}
               </Link>
