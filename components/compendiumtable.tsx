@@ -2,7 +2,7 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal"
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { FaSort } from "react-icons/fa";
@@ -13,7 +13,18 @@ export default function CompendiumTable({ columns, displayColumns, data, detailT
     const [searchQuery, setSearchQuery] = useState("");
     const [sort, setSort] = useState({ keyToSort: "name", direction: "asc" });
     const [filter, setFilter] = useState("");
+    const [isMobile, setIsMobile] = useState<boolean>(false);
 
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => {
+            window.removeEventListener('resize', checkMobile);
+        };
+    }, [])
 
     const handleRowClick = (rowIndex: number) => {
         setSelectedRowData(data[rowIndex]);
@@ -21,7 +32,8 @@ export default function CompendiumTable({ columns, displayColumns, data, detailT
     };
 
     function handleHeaderClick(index: number) {
-        const columnKey = columns[index];
+        const columnsCurrentlyDisplayed = isMobile ? columns.slice(0, 2) : columns;
+        const columnKey = columnsCurrentlyDisplayed[index];
         setSort({
             keyToSort: columnKey,
             direction:
@@ -72,11 +84,15 @@ export default function CompendiumTable({ columns, displayColumns, data, detailT
         const lowerCaseFilter = filter.toLowerCase();
         return sortedData.filter((item: any) => {
             // Check if the filter matches any column's value
-            return columns.some(column =>
+            const columnsToCheck = isMobile ? columns.slice(0, 2) : columns;
+            return columnsToCheck.some(column =>
                 String(item[column]).toLowerCase().includes(lowerCaseFilter)
             );
         });
-    }, [data, sort, filter, columns]); // Add 'columns' to dependencies
+    }, [data, sort, filter, columns, isMobile]); // Add 'columns' to dependencies
+
+    const columnsInUse = isMobile ? columns.slice(0, 2) : columns;
+    const displayColumnsInUse = isMobile ? displayColumns.slice(0, 2) : displayColumns;
 
     return (
         <>
@@ -87,7 +103,7 @@ export default function CompendiumTable({ columns, displayColumns, data, detailT
             topContent={topContent}
                 >
             <TableHeader>
-                {displayColumns.map((displayColumn, index) => (
+                {displayColumnsInUse.map((displayColumn, index) => (
                     <TableColumn key={index} className="font-bold" onClick={() => handleHeaderClick(index)}>
                         {displayColumn}
                         <FaSort></FaSort>
@@ -100,7 +116,7 @@ export default function CompendiumTable({ columns, displayColumns, data, detailT
                             key={rowIndex}
                             onClick={() => handleRowClick(rowIndex)}
                             className="cursor-pointer">
-                            {columns.map((column, colIndex) => (
+                            {columnsInUse.map((column, colIndex) => (
                                 <TableCell key={colIndex}>{row[column]}</TableCell>
                             ))}
                         </TableRow>
