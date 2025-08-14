@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import CompendiumTable from "@/components/compendiumtable";
+import SpellCompendiumTable from "@/components/spellcompendiumtable";
 import { Spinner } from "@heroui/spinner";
 import { siteConfig } from "@/config/site";
 
@@ -38,7 +38,7 @@ export default function SpellsPage() {
             {loading ? (
                 <Spinner />
             ) : (
-                    <CompendiumTable columns={columns} displayColumns={displayColumns} data={data} detailText={detailText}></CompendiumTable>
+                    <SpellCompendiumTable columns={columns} displayColumns={displayColumns} data={data} detailText={detailText}></SpellCompendiumTable>
             )}
         </div>
     );

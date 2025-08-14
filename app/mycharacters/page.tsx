@@ -1,9 +1,11 @@
-import { title } from "@/components/primitives";
+'use client';
 
+import { title } from "@/components/primitives";
+import CharacterSheet  from "@/components/charactersheet";
 export default function MyCharactersPage() {
   return (
-    <div>
-      <h1 className={title()}>My Characters</h1>
+      <div>
+          <CharacterSheet></CharacterSheet>
     </div>
   );
 }
