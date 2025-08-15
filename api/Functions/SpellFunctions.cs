@@ -35,10 +35,16 @@ public class SpellFunctions
     public async Task<IActionResult> GetAllSpellsForTable([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetAllSpellsForTable")] HttpRequest req)
     {
         _logger.LogInformation("GetAllSpells run...");
-        var Spells = await _repository.GetAllAsync();
-
-
-        return new OkObjectResult(Spells.Select(s => new { name = s.Name, description = s.Description }));
+        var spells = await _db.Spells
+            .Include(s => s.SpellEffects)
+            .ToListAsync();
+        return new OkObjectResult(spells.Select(s => new 
+            { 
+                Name = s.Name, 
+                SpellEffects = s.SpellEffects.Select(se => new { se.Level, se.Damage, se.Effect, se.Cooldown }), 
+                Description = s.Description
+            }
+        ));
     }
 
     [Function("GetSpellById")]
@@ -99,5 +105,12 @@ public class SpellFunctions
         await _unitOfWork.CommitAsync();
 
         return success ? new NoContentResult() : new NotFoundResult();
+    }
+
+    private class SpellForTable
+    {
+        public string Name { get; set; }
+        public List<string> SpellEffects { get; set; }
+        public string Description { get; set; }
     }
 }
