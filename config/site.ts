@@ -42,7 +42,7 @@ export const siteConfig = {
     discord: "https://discord.gg/9b6yyZKmH4",
     sponsor: "https://patreon.com/jrgarciadev",
     github: "https://github.com/mullajg/revolutionariesrpg",
-    //baseApiUrl: "https://revolutionariesrpg.com/api",
-    baseApiUrl: "http://localhost:7071/api"
+    baseApiUrl: "https://revolutionariesrpg.com/api",
+
   },
 };
