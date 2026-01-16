@@ -39,6 +39,7 @@ jobs:
         run: |
           npm install -g azure-functions-core-tools@4
       - name: Deploy to Function App
+        working-directory: ./api
         run: |
           func azure functionapp publish revolutionariesfunctionapp
 
@@ -53,5 +54,6 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_GROUND_04B65CE1E }}
           action: "close"
+
 
 
