@@ -35,6 +35,9 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Setup Azure Functions Core Tools
+        run: |
+          npm install -g azure-functions-core-tools@4
       - name: Deploy to Function App
         run: |
           func azure functionapp publish revolutionariesfunctionapp
@@ -50,4 +53,5 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_GROUND_04B65CE1E }}
           action: "close"
+
 
