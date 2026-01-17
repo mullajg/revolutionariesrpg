@@ -43,10 +43,17 @@ jobs:
         run: |
           dotnet clean
           rm -rf obj bin
-      - name: Deploy to Function App
+      - name: Restore and Build
         working-directory: ./api
         run: |
-          func azure functionapp publish revolutionariesfunctionapp --dotnet-isolated
+          dotnet restore
+          dotnet publish -c Release -o ./publish
+      - name: Deploy to Function App
+        uses: Azure/functions-action@v1
+        with:
+          app-name: 'revolutionariesfunctionapp'
+          package: './api/publish'
+          publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -59,6 +66,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_GROUND_04B65CE1E }}
           action: "close"
+
 
 
 
