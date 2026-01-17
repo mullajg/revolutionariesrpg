@@ -43,17 +43,23 @@ jobs:
         run: |
           dotnet clean
           rm -rf obj bin
-      - name: Restore and Build
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Setup Azure Functions Core Tools
+        run: |
+          npm install -g azure-functions-core-tools@4
+      - name: Fix Permissions and Clean Build Artifacts
         working-directory: ./api
         run: |
-          dotnet restore
-          dotnet publish -c Release -o ./publish
+          sudo chmod -R 777 obj bin 2>/dev/null || true
+          rm -rf obj bin
+          dotnet clean --configuration Release || true
       - name: Deploy to Function App
-        uses: Azure/functions-action@v1
-        with:
-          app-name: 'revolutionariesfunctionapp'
-          package: './api/publish'
-          publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
+        working-directory: ./api
+        run: |
+          func azure functionapp publish revolutionariesfunctionapp --dotnet-isolated
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
