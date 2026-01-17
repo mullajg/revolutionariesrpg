@@ -31,6 +31,15 @@ jobs:
           app_location: "/" # App source code path
           api_location: "api" # Api source code path - optional
           output_location: "out" # Built app content directory - optional
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Clear NuGet Cache
+        run: |
+          dotnet nuget locals all --clear
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -38,25 +47,12 @@ jobs:
       - name: Setup Azure Functions Core Tools
         run: |
           npm install -g azure-functions-core-tools@4
-      - name: Clean Build Artifacts
+      - name: Restore and Publish
         working-directory: ./api
         run: |
-          dotnet clean
-          rm -rf obj bin
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-      - name: Setup Azure Functions Core Tools
-        run: |
-          npm install -g azure-functions-core-tools@4
-      - name: Fix Permissions and Clean Build Artifacts
-        working-directory: ./api
-        run: |
-          sudo chmod -R 777 obj bin 2>/dev/null || true
-          rm -rf obj bin
-          dotnet clean --configuration Release || true
-      - name: Deploy to Function App
+          dotnet restore api.csproj
+          dotnet publish api.csproj -c Release -o ./publish
+      - name: Deploy Function App
         working-directory: ./api
         run: |
           func azure functionapp publish revolutionariesfunctionapp --dotnet-isolated
@@ -72,6 +68,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_GROUND_04B65CE1E }}
           action: "close"
+
 
 
 
