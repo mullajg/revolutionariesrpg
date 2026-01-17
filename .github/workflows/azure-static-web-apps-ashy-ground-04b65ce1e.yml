@@ -38,6 +38,11 @@ jobs:
       - name: Setup Azure Functions Core Tools
         run: |
           npm install -g azure-functions-core-tools@4
+      - name: Clean Build Artifacts
+        working-directory: ./api
+        run: |
+          dotnet clean
+          rm -rf obj bin
       - name: Deploy to Function App
         working-directory: ./api
         run: |
@@ -54,6 +59,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_GROUND_04B65CE1E }}
           action: "close"
+
 
 
 
