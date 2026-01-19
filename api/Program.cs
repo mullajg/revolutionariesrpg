@@ -9,6 +9,11 @@ using revolutionariesrpg.api.Interfaces;
 var builder = FunctionsApplication.CreateBuilder(args);
 var cs = Environment.GetEnvironmentVariable("SqlConnectionString");
 
+if (string.IsNullOrEmpty(cs))
+{
+    throw new InvalidOperationException("SqlConnectionString environment variable is not set!");
+}
+
 builder.ConfigureFunctionsWebApplication();
 
 builder.Services
